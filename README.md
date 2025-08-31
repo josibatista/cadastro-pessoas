@@ -1,4 +1,7 @@
-#Cadastro de Clientes - Pessoas
+![Status](https://img.shields.io/badge/status-imcompleto-red)
+![Versão](https://img.shields.io/badge/versão-0.1.0-orange) 
+
+# Cadastro de Clientes - Pessoas
 
 Para executar este app você deve configurar o banco de dados PostgreSQL. Este pode ser configurado localmente ou por meio de docker.
 Caso opte por docker, execute o comando:
