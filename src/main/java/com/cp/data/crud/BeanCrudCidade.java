@@ -22,7 +22,7 @@ public class BeanCrudCidade extends AbstractCrud<Cidade> {
     protected EntityManager getEntityManager() {
         if (em == null) {
             em = Persistence.createEntityManagerFactory(EMNames.EMN1, EMNames.getEMN1Props()).createEntityManager();
-            AppLog.getInstance().info("Entity manager criado com sucesso");
+            AppLog.getInstance().info("Entity manager para Cidade criado com sucesso");
         }
         return em;
     }
