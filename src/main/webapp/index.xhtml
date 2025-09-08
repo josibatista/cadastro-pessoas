@@ -15,14 +15,14 @@
             nome <h:inputText value="#{beanJFPessoa.nome}" size="30"/>
 
             <h:selectOneMenu value="#{beanJFPessoa.cidade}">
-                <f:selectItem itemValue="" itemLabel="=== Selecione uma Cidade ===" />
+                <f:selectItem itemValue="" itemLabel="Selecione uma Cidade" />
                 <f:selectItems value="#{beanJFCidade.all}" var="c" itemLabel="#{c.nome}" itemValue="#{c.id}" />
             </h:selectOneMenu>
             <h:commandButton value="[]" action="#{beanJFPessoa.newID()}" />
             <h:commandButton value="+" action="#{beanJFPessoa.add()}" />
         </h:form>
     <hr/>
-        <h2>== Lista de clientes cadastrados ==</h2>
+        <h1>Lista de clientes cadastrados</h1>
         <h:form>
             <h:dataTable value="#{beanJFPessoa.all}" var="pessoa">
                 <h:column>
