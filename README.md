@@ -1,5 +1,5 @@
 ![Status](https://img.shields.io/badge/status-incompleto-red)
-![Versão](https://img.shields.io/badge/versão-0.1.0-orange) 
+![Versão](https://img.shields.io/badge/versão-0.2.0-orange) 
 
 # Cadastro de Clientes - Pessoas
 
