@@ -5,7 +5,8 @@ package com.cp.data.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 
@@ -27,6 +28,9 @@ public class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private int id;
+    @NotBlank
+    @Size(max = 100)
+    @Column(nullable = false, length = 100)
     private String nome;
 
 
