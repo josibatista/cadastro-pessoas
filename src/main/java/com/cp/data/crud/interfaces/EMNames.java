@@ -5,7 +5,6 @@
 package com.cp.data.crud.interfaces;
 
 import com.cp.util.AppLog;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,38 +17,60 @@ public class EMNames implements Serializable {
 
     public static final String EMN1 = "default";
 
-    public static Map<String, String> getEMN1Props()  {
+    //Substua número mágino
+    //Técnica de Substituir número mágico por constante simbólica
+    private static final String JDBC_DRIVER = "org.postgresql.Driver";
+    private static final String LOCAL_URL = "jdbc:postgresql://localhost:5432/localdb";
+    private static final String LOCAL_USER = "postgres";
+    private static final String LOCAL_PASSWORD = "postgres";
 
-        //Em producao Crie uma variavel de ambiente DATABASE_URL. Ex.:
-        //DATABASE_URL="jdbc:postgresql://localhost:5432/localdb"
-        //Tambem e necessario criar as variaveis DATABASE_USERNAME e DATABASE_PASSWORD
-        String BD_producao = System.getenv("DATABASE_URL");
+    //Chamadas do método simplificador
+    //Renomear método: getEMN1Props() -> getEntityManagerProperties()
+    public static Map<String, String> getEntityManagerProperties()  {
+
+        //compondo métodos
+        //Variável temporária dividida
+        String databaseUrl = System.getenv("DATABASE_URL");
         Map<String, String> properties = new HashMap<>();
-        if (BD_producao == null) { //caso nao tenha a variavel de ambiente
-            AppLog.getInstance().info("Configurar banco de dados para acesso local");
-            properties.put("jakarta.persistence.jdbc.url", "jdbc:postgresql://localhost:5432/localdb");
-            properties.put("jakarta.persistence.jdbc.user", "postgres");
-            properties.put("jakarta.persistence.jdbc.driver", "org.postgresql.Driver");
-            properties.put("jakarta.persistence.jdbc.password", "postgres");
-        } else { //se a variavel de ambiente foi criada, indica que o projeto está alocado em producao
-            AppLog.getInstance().info("#### Configurar banco de dados em producao #### ");
-            String jdbc_database_username = System.getenv("DATABASE_USERNAME");
-            String jdbc_database_password = System.getenv("DATABASE_PASSWORD");
-            System.out.println("variaveis: " +jdbc_database_username +":"+jdbc_database_password);
 
-            properties.put("jakarta.persistence.jdbc.user", jdbc_database_username);
-            properties.put("jakarta.persistence.jdbc.driver", "org.postgresql.Driver");
-            properties.put("jakarta.persistence.jdbc.password", jdbc_database_password);
-            System.out.println("XXXXXXXXXX ===== fim config");
-            properties.put("jakarta.persistence.jdbc.url", BD_producao );
-            try {
-                System.out.println("Carregar driver");
-                Class.forName("org.postgresql.Driver");
-            }catch(Exception e){
-                System.out.println("ERRO #############################");
-            }
-
-           }
+        if (databaseUrl == null) {
+            configureLocalDatabase(properties);
+        } else {
+            configureProductionDatabase(properties, databaseUrl);
+        }
         return properties;
+    }
+    
+    //compondo métodos
+    //extrair método
+    private static void configureLocalDatabase(Map<String, String> properties) {
+        AppLog.getInstance().info("Configurar banco de dados para acesso local");
+        properties.put("jakarta.persistence.jdbc.url", LOCAL_URL);
+        properties.put("jakarta.persistence.jdbc.user", LOCAL_USER);
+        properties.put("jakarta.persistence.jdbc.driver", JDBC_DRIVER);
+        properties.put("jakarta.persistence.jdbc.password", LOCAL_PASSWORD);
+    }
+
+    //extrair método
+    private static void configureProductionDatabase(Map<String, String> properties, String databaseUrl) {
+        AppLog.getInstance().info("#### Configurar banco de dados em produção ####");
+    
+        //Variável temporária dividida
+        String username = System.getenv("DATABASE_USERNAME");
+        String password = System.getenv("DATABASE_PASSWORD");
+
+        AppLog.getInstance().info("Variáveis carregadas: " + username + ":" + password);
+
+        properties.put("jakarta.persistence.jdbc.user", username);
+        properties.put("jakarta.persistence.jdbc.driver", JDBC_DRIVER);
+        properties.put("jakarta.persistence.jdbc.password", password);
+        properties.put("jakarta.persistence.jdbc.url", databaseUrl);
+
+        try {
+            Class.forName(JDBC_DRIVER);
+            AppLog.getInstance().info("Driver JDBC carregado com sucesso");
+        } catch (Exception e) {
+            AppLog.getInstance().warn("Erro ao carregar driver JDBC: " + e.getMessage());
+        }
     }
 }
